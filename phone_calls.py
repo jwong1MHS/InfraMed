@@ -1,16 +1,77 @@
 # must be run on the internet
+# will not work with trial accounts
 from twilio.rest import Client
+from account import *
 
-# Your Account SID from twilio.com/console
-account_sid = "ACf13af826fa88d4d1b52e226f1a8fe178"
-# Your Auth Token from twilio.com/console
-auth_token  = "aaf2a25655ce56e7bf78f532e3b27d24"
+account_sid = sid
+# Authentication token may constantly change
+auth_token  = token
 
 client = Client(account_sid, auth_token)
 
-message = client.messages.create(
-    to="+19082679550", 
-    from_="+12027409056",
-    body="Hello from Python!")
+callContacts = []
+messageContacts = []
 
-print(message.sid)
+def addCalls(contact_number):
+  call = client.calls.create(
+      to=contact_number,
+      from_=phone_number,
+      url="http://demo.twilio.com/docs/voice.xml")
+  message = client.messages.create(
+      to=contact_number, 
+      from_=phone_number,
+      body=full_name + " has added you as an emergency contact for our InfraMed program. You will receive a call from this number if " + full_name + " has an emergency.")
+  print(call.sid)
+  print(message.sid)
+  # add confirmation to be used as contact
+  addAnotherContact()
+
+def addMessages(contact_number):
+  message = client.messages.create(
+      to=contact_number, 
+      from_=phone_number,
+      body=full_name + " has added you as an emergency contact for our InfraMed program. You will receive an SMS message from this number if " + full_name + " has an emergency.")
+  print(message.sid)
+  # add confirmation to be used as contact
+  addAnotherContact()
+
+def addBoth(contact_number):
+  message = client.messages.create(
+      to=contact_number, 
+      from_=phone_number,
+      body=full_name + " has added you as an emergency contact for our InfraMed program. You will receive both a call and an SMS message from this number if " + full_name + " has an emergency.")
+  # add confirmation to be used as contact
+  print(message.sid)
+  addAnotherContact()
+
+def addContact():
+  lastname = input("Last name of contact? ").lower()
+  firstname = input("First name of contact? ").lower()
+  contact_number = input("Number of contact? ").lower()
+  contact_relation = input("Relation to contact? ").lower()
+  contact_type = input("Call or message or both? ").lower()
+
+  if contact_type == "call" or contact_type == "calls":
+    callContacts.append([lastname, firstname, contact_number, contact_relation])
+    addCalls(contact_number)
+  elif contact_type == "message" or contact_type == "messages":
+    messageContacts.append([lastname, firstname, contact_number, contact_relation])
+    addMessages(contact_number)
+  elif contact_type == "both":
+    callContacts.append([lastname, firstname, contact_number, contact_relation])
+    messageContacts.append([lastname, firstname, contact_number, contact_relation])
+    addBoth(contact_number)
+  else:
+    addContact()
+
+def addAnotherContact():
+  addcontact = input("Add another contact (yes or no)? ")
+  if addcontact.lower() == "yes":
+    addContact()
+  elif addcontact.lower() == "no":
+    print(callContacts)
+    print(messageContacts)
+  else:
+    addAnotherContact()
+
+addContact()
