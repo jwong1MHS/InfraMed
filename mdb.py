@@ -6,13 +6,14 @@ db=client.Users
 
 #Add Data
 
-def insertContact(last, first, num, relation, response):
+def insertContact(last, first, num, relation, response, pat_id):
     db.Contacts.insert_one(
         { 'last_name' : last,
           'first_name' : first,
-          'phone_number' : num:
-          'relation' : relation
-          'response_type' : response
+          'phone_number' : num,
+          'relation' : relation,
+          'response_type' : response,
+          'patient_id' : pat_id
           })
 def insertPatient(last, first, age):
     db.Patients.insert_one(
