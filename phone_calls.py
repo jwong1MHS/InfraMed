@@ -2,7 +2,7 @@
 # will not work with trial accounts
 from twilio.rest import Client
 from mdb import *
-from account import *
+#from account import *
 
 account_sid = "ACf13af826fa88d4d1b52e226f1a8fe178"
 # Authentication token may constantly change
