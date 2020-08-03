@@ -1,12 +1,12 @@
 # must be run on the internet
 # will not work with trial accounts
 from twilio.rest import Client
-from account import *
 from mdb import *
+from account import *
 
-account_sid = sid
+account_sid = "ACf13af826fa88d4d1b52e226f1a8fe178"
 # Authentication token may constantly change
-auth_token  = token
+auth_token  = "d47eeb79017dc730811182330f4e57df"
 
 client = Client(account_sid, auth_token)
 
@@ -45,7 +45,7 @@ def addBoth(contact_number):
   print(message.sid)
   addAnotherContact()
 
-def addContact():
+def addContact(pat_id = None):
   lastname = input("Last name of contact? ").lower()
   firstname = input("First name of contact? ").lower()
   contact_number = input("Number of contact? ").lower()
@@ -54,16 +54,16 @@ def addContact():
 
   if contact_type == "call" or contact_type == "calls":
     callContacts.append([lastname, firstname, contact_number, contact_relation])
-    insertContact(lastname, firstname, contact_number, contact_relation, "call")
+    insertContact(lastname, firstname, contact_number, contact_relation, "call", pat_id)
     addCalls(contact_number)
   elif contact_type == "message" or contact_type == "messages":
     messageContacts.append([lastname, firstname, contact_number, contact_relation])
-    insertContact(lastname, firstname, contact_number, contact_relation, "message")
+    insertContact(lastname, firstname, contact_number, contact_relation, "message", pat_id)
     addMessages(contact_number)
   elif contact_type == "both":
     callContacts.append([lastname, firstname, contact_number, contact_relation])
     messageContacts.append([lastname, firstname, contact_number, contact_relation])
-    insertContact(lastname, firstname, contact_number, contact_relation, "call")
+    insertContact(lastname, firstname, contact_number, contact_relation, "both", pat_id)
     addBoth(contact_number)
   else:
     addContact()
@@ -77,5 +77,3 @@ def addAnotherContact():
     print(messageContacts)
   else:
     addAnotherContact()
-
-addContact()
