@@ -15,9 +15,9 @@ def insertContact(last, first, num, relation, response, pat_id):
           'response_type' : response,
           'patient_id' : pat_id
           })
-def insertPatient(last, first, age):
+def insertPatient(last, first, bday):
     db.Patients.insert_one(
         { 'last_name' : last,
           'first_name' : first,
-          'age' : age
+          'birthday' : bday
           })
