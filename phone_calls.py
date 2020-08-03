@@ -2,6 +2,7 @@
 # will not work with trial accounts
 from twilio.rest import Client
 from account import *
+from mdb import *
 
 account_sid = sid
 # Authentication token may constantly change
@@ -53,13 +54,16 @@ def addContact():
 
   if contact_type == "call" or contact_type == "calls":
     callContacts.append([lastname, firstname, contact_number, contact_relation])
+    insertContact(lastname, firstname, contact_number, contact_relation, "call")
     addCalls(contact_number)
   elif contact_type == "message" or contact_type == "messages":
     messageContacts.append([lastname, firstname, contact_number, contact_relation])
+    insertContact(lastname, firstname, contact_number, contact_relation, "message")
     addMessages(contact_number)
   elif contact_type == "both":
     callContacts.append([lastname, firstname, contact_number, contact_relation])
     messageContacts.append([lastname, firstname, contact_number, contact_relation])
+    insertContact(lastname, firstname, contact_number, contact_relation, "call")
     addBoth(contact_number)
   else:
     addContact()
